@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { request } from "../datocms";
 
 const data = ref(null);
@@ -14,21 +14,31 @@ const HOMEPAGE_QUERY = `
       heroContent {
         ... on HeroRecord {
           heroText
+          heroDescription {value}
         }
       }
+      aboutSection{
+      ... on AboutRecord{
+        sectionTitle
+        aboutText {value}
+        aboutImage {
+          id
+        }
+      }
+  	}
     }
   }
 `;
 
-onMounted(async () => {
-  try {
-    data.value = await request({ query: HOMEPAGE_QUERY });
-    console.log(data.value.homePage.heroContent);
-  } catch (e) {
-    error.value = e;
-  }
+request({ query: HOMEPAGE_QUERY }).then(result => {
+  data.value = result;
+  console.log(data.value.homePage.heroContent);
+}).catch(e => {
+  error.value = e;
+}).finally(() => {
   loading.value = false;
 });
+
 </script>
 
 <template>
@@ -36,8 +46,8 @@ onMounted(async () => {
     <div v-if="loading">Loading...</div>
     <div v-else-if="error">Something bad happened</div>
     <div v-else>
-      <h1>{{ data.homePage.name }}</h1>
-      <p>{{ data.homePage.heroContent.heroText }}</p>
+      <h1> y{{ data.homePage.name }}</h1>
+      <p>{{ data.homePage.heroContent[0].heroText }}</p>
     </div>
   </div>
 </template>
