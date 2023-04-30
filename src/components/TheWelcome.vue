@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { request } from "../datocms";
 import { StructuredText as DatocmsStructuredText } from "vue-datocms";
+import { Image as DatocmsImage } from "vue-datocms";
 
 const data = ref(null);
 const error = ref(null);
@@ -22,9 +23,6 @@ const HOMEPAGE_QUERY = `
         ... on AboutRecord{
           sectionTitle
           aboutText {value}
-          aboutImage {
-            id
-          }
         }
       }
     }
@@ -50,6 +48,7 @@ request({ query: HOMEPAGE_QUERY }).then(result => {
       <h1>{{ data.homePage.name }}</h1>
       <p>{{ data.homePage.heroContent[0].heroText }}</p>
       <datocms-structured-text :data="data.homePage.heroContent[0].heroDescription" />
+      <!-- <datocms-image :data="data.homePage.heroContent[0].aboutImage.responsiveImage"/> -->
     </div>
   </div>
 </template>
