@@ -10,6 +10,7 @@
   "dependencies": {
     "graphql-request": "^6.0.0",
     "vue": "^3.2.47",
+    "vue-datocms": "^4.0.5",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
